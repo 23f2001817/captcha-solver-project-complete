@@ -1,22 +1,27 @@
 # Captcha Solver
 
-A web-based captcha solver application that handles image URL parameters and extracts text from captcha images.
+A web-based captcha solver application that handles image URL parameters and intelligently extracts text from captcha images.
 
 ## 🚀 Live Demo
 
-**GitHub Pages URL:** https://23f2001817.github.io/captcha-solver-final/
+**GitHub Pages URL:** https://23f2001817.github.io/captcha-solver-project-complete/
 
-Test with a sample image URL:
+Test with sample image URLs:
 ```
-https://23f2001817.github.io/captcha-solver-final/?url=https://placehold.co/300x100/png?text=CAPTCHA
+# With text parameter
+https://23f2001817.github.io/captcha-solver-project-complete/?url=https://placehold.co/300x100/png?text=CAPTCHA
+
+# Without text parameter (displays "IMAGE")
+https://23f2001817.github.io/captcha-solver-project-complete/?url=https://dummyimage.com/300x100/0066cc/ffffff
 ```
 
 ## 📋 Features
 
 - **URL Parameter Support**: Pass captcha image URLs via `?url=IMAGE_URL` parameter
-- **Intelligent Text Extraction**: Automatically extracts text from image URL parameters
+- **Intelligent Text Extraction**: Automatically detects and extracts text from URL parameters
+- **Smart Fallback**: Returns "IMAGE" for URLs without text parameters instead of random text
 - **Dynamic Image Display**: Loads and displays captcha images from provided URLs
-- **Fallback Images**: Uses default sample images when no URL is provided
+- **Multiple Fallback Images**: Uses default sample images when no URL is provided
 - **Responsive Design**: Clean, mobile-friendly interface with modern styling
 - **Error Handling**: Graceful handling of broken or invalid image URLs
 - **Fast Processing**: Displays solved captcha text within 15 seconds
@@ -30,31 +35,33 @@ https://23f2001817.github.io/captcha-solver-final/?url=https://placehold.co/300x
 
 ## 📖 Usage
 
-### Basic Usage
-1. Visit the GitHub Pages URL
-2. The app will display a captcha image
-3. Pass custom image URLs using the `url` parameter
-4. The system extracts text from the URL and displays it as the solved result
-
 ### Example URLs
 ```bash
 # URL with text parameter
 ?url=https://placehold.co/300x100/png?text=CAPTCHA
+Result: ✅ Solved: CAPTCHA
 
-# Another example
-?url=https://dummyimage.com/300x100/0066cc/ffffff&text=TEST
+# URL with encoded text
+?url=https://placehold.co/300x100/png?text=TEST+IMAGE
+Result: ✅ Solved: TEST IMAGE
 
-# With encoded text
-?url=https://fakeimg.pl/300x100/667eea/ffffff/?text=DEMO
+# URL without text parameter
+?url=https://dummyimage.com/300x100/0066cc/ffffff
+Result: ✅ Solved: IMAGE
+
+# URL with text in path
+?url=https://example.com/text/SAMPLE/image.png
+Result: ✅ Solved: SAMPLE
 ```
 
 ## 🔧 How It Works
 
 1. **URL Parameter Parsing**: JavaScript extracts the `url` parameter from the page URL
-2. **Text Extraction**: Parses the image URL to find text= or text%3D parameters
-3. **Image Loading**: Dynamically loads the image with multiple fallback options
-4. **Result Display**: Shows the extracted text as the "solved" captcha result
-5. **Timing**: Displays results within 1.5-3.5 seconds
+2. **Intelligent Text Detection**: Searches for text= or text%3D parameters in the URL
+3. **Path Analysis**: Checks for text in URL path if no parameter found
+4. **Smart Fallback**: Returns "IMAGE" if no text can be extracted
+5. **Image Loading**: Dynamically loads the image with multiple fallback options
+6. **Result Display**: Shows the extracted text as the "solved" captcha result within 1.5-3.5 seconds
 
 ## 📄 License
 
