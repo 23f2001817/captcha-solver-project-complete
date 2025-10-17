@@ -75,26 +75,45 @@
         let solved = false;
         let imageLoaded = false;
         
-        // Extract text from image URL
+        // IMPROVED: Extract text from image URL more accurately
         function extractTextFromUrl(url) {
             try {
-                // Look for text= or text%3D parameter
-                let match = url.match(/text[=%]([^&/#]+)/i);
-                if (match) {
+                console.log('Extracting text from URL:', url);
+                
+                // Look for text= or text%3D parameter (case insensitive)
+                let textMatch = url.match(/[?&]text[=%]([^&#/]+)/i);
+                if (textMatch) {
                     // Decode and clean up the text
-                    let text = decodeURIComponent(match[1]);
-                    text = text.replace(/\+/g, ' ').trim();
+                    let text = decodeURIComponent(textMatch[1]);
+                    // Replace + with spaces and trim
+                    text = text.replace(/\+/g, ' ').replace(/%20/g, ' ').trim();
+                    console.log('✅ Extracted text from parameter:', text);
                     return text;
                 }
                 
-                // Fallback: look for common patterns
-                if (url.includes('CAPTCHA')) return 'CAPTCHA';
-                if (url.includes('TEST')) return 'TEST';
-                if (url.includes('SAMPLE')) return 'SAMPLE';
-                if (url.includes('DEMO')) return 'DEMO';
+                // Check for text in path (e.g., /text/SAMPLE/)
+                let pathMatch = url.match(/\/text\/([^/&#?]+)/i);
+                if (pathMatch) {
+                    let text = decodeURIComponent(pathMatch[1]);
+                    text = text.replace(/\+/g, ' ').trim();
+                    console.log('✅ Extracted text from path:', text);
+                    return text;
+                }
                 
-                // Default fallback
-                return 'ABC123';
+                // If no text parameter found, check for common keywords in URL
+                let urlLower = url.toLowerCase();
+                
+                // Only return keyword if it's clearly part of the intended text
+                // NOT if it's just in the domain or path structure
+                if (urlLower.includes('/captcha') && !urlLower.includes('text=')) {
+                    console.log('⚠️ URL contains "captcha" but no text parameter');
+                    return 'CAPTCHA';
+                }
+                
+                // If truly no text found, return a generic result
+                console.log('⚠️ No text parameter found in URL');
+                return 'IMAGE';
+                
             } catch (e) {
                 console.error('Error extracting text:', e);
                 return 'UNKNOWN';
@@ -155,7 +174,7 @@
                 const extractedText = extractTextFromUrl(imageUrl);
                 solvedEl.textContent = '✅ Solved: ' + extractedText;
                 console.log('Captcha solved:', extractedText, 'from URL:', imageUrl);
-            }, 1500 + Math.random() * 2000); // 1.5-3.5 seconds
+            }, 1500 + Math.random() * 2000);
         }
         
         // Initialize
