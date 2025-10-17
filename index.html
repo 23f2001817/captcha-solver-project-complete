@@ -63,7 +63,7 @@
         </div>
     </div>
     <script>
-        const fallbackImages = ['https://placehold.co/300x100/6366f1/white/png?text=CAPTCHA', 'https://dummyimage.com/300x100/0066cc/ffffff&text=SAMPLE+CAPTCHA', 'https://placehold.co/300x100/6366f1/white/png?text=TEST+CAPTCHA', 'https://fakeimg.pl/300x100/667eea/ffffff/?text=DEMO+IMAGE', 'https://via.placeholder.com/300x100/0066cc/ffffff?text=FALLBACK'];
+        const fallbackImages = ['https://placehold.co/320x100/28a745/white/png?text=VERIFIED', 'https://dummyimage.com/300x100/0066cc/ffffff&text=SAMPLE+CAPTCHA', 'https://placehold.co/300x100/6366f1/white/png?text=TEST+CAPTCHA', 'https://fakeimg.pl/300x100/667eea/ffffff/?text=DEMO+IMAGE', 'https://via.placeholder.com/300x100/0066cc/ffffff?text=FALLBACK'];
         const params = new URLSearchParams(window.location.search);
         let imageUrl = params.get('url') || fallbackImages[0];
         let imgEl = document.getElementById('captcha-img');
